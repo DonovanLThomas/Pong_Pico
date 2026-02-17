@@ -7,6 +7,9 @@ build/
 # VSCode
 .vscode/
 
+#PICO-SDK
+pico-sdk/
+
 # Compiled files
 *.o
 *.elf
