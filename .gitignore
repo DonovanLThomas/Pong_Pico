@@ -1,0 +1,16 @@
+# Build output
+build/
+
+# Mac junk
+.DS_Store
+
+# VSCode
+.vscode/
+
+# Compiled files
+*.o
+*.elf
+*.uf2
+*.bin
+*.map
+CMakeCache.txt
