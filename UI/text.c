@@ -4,7 +4,8 @@
 int screen_x = 0;
 int screen_y = 0;
 
-int default_spacing = 6;
+int base_advance = 6;
+int base_space_advance = 3;
 //Top of binary is top of function so to do shift have to do bits >> 6-row
 void draw_char(char letter, int x, int y, int font_size, int color){
     //lowercase conversion
@@ -15,6 +16,7 @@ void draw_char(char letter, int x, int y, int font_size, int color){
     if (letter < 32 || letter > 127){
         return;
     }
+
     int position = letter - 32;
 
     for(int col = 0; col <= 4; col++){
@@ -29,9 +31,17 @@ void draw_char(char letter, int x, int y, int font_size, int color){
 }
 
 void draw_string(char *letter, int length, int x, int y, int font_size, int color){
-    default_spacing = default_spacing * font_size;
-    for (int i = 0; i <= length; i ++){
-        draw_char(letter[i], x + default_spacing * i, y, font_size, color);
+    int advnace = base_advance * font_size;
+    int space_advance = base_space_advance * font_size;
+    int current_x = x;
+    for (int i = 0; i < length; i ++){
+        draw_char(letter[i], current_x, y, font_size, color);
+        if (letter[i] == ' '){
+            current_x += space_advance;
+        }
+        else{
+            current_x += advnace;
+        }
     }
 }
 
