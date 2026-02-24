@@ -24,14 +24,26 @@ Paddle Left_paddle;
 Paddle Right_paddle;
 Ball Pong_ball;
 
+int int_sqrt(int x) {
+    int r = 0;
+    while (r * r <= x) {
+        r++;
+    }
+    return r - 1;
+}
 
 
 int main()
 {
-    //Display initialization making screen black
+    // //Display initialization making screen black
     display_init();
     display_fill(0x0000);
-    // net_line(5,10,0xFFFF);
+    // // net_line(5,10,0xFFFF);
+
+    //Counting time that has passed
+    uint32_t Time_passed;
+    uint32_t start_time = to_ms_since_boot(get_absolute_time());
+    uint32_t elapsed_time = 0;
 
     //Starting Scores
     int Left_player_score = 0;
@@ -41,10 +53,12 @@ int main()
     int margin = 6;
 
     int paddle_center;
-    int max_vy = 15;
+    int max_vy = 10;
+    int max_ball_speed = 10;
     int movement_speed = 10;
     int win_score = 5;
 
+    int ball_speed = 6;
     //Left paddle initial values
     Left_paddle.w = 6;
     Left_paddle.h = 40;
@@ -70,20 +84,40 @@ int main()
     Pong_ball.y = ((LCD_H - Pong_ball.h) / 2 )+ 20;
     Pong_ball.prev_x = Pong_ball.x;
     Pong_ball.prev_y = Pong_ball.y;
-    Pong_ball.vx = 7;
-    Pong_ball.vy = 5;
+    Pong_ball.vx = 4;
+    Pong_ball.vy = 3;
 
     fill_rect(Pong_ball.x, Pong_ball.y, Pong_ball.w, Pong_ball.h, 0xFFFF);
 
+
+
     while(true){
         //Score Board
-        draw_left_digit(Left_player_score, 0xFFFF);
-        draw_right_digit(Right_player_score, 0xFFFF);
+        draw_digit(Left_player_score, 75, 10, 10, 2, 0xFFFF);
+        draw_digit(Right_player_score, 235, 10, 10, 2, 0xFFFF);
+        Time_passed = to_ms_since_boot(get_absolute_time());
+        elapsed_time = Time_passed - start_time; 
+        
+
 
         
         //Making ball move
         Pong_ball.prev_x = Pong_ball.x;
         Pong_ball.prev_y = Pong_ball.y;
+        //Increasing Speed of Ball with Round Time
+        if (elapsed_time > 1000 && ball_speed < max_ball_speed){
+            ball_speed++;
+            start_time = to_ms_since_boot(get_absolute_time());
+            // keep vy within [-ball_speed+1, ball_speed-1]
+            if (Pong_ball.vy > ball_speed - 1) Pong_ball.vy = ball_speed - 1;
+            if (Pong_ball.vy < -(ball_speed - 1)) Pong_ball.vy = -(ball_speed - 1);
+
+            // recompute vx magnitude from new speed, preserve direction
+            int vx_mag = int_sqrt(ball_speed * ball_speed - Pong_ball.vy * Pong_ball.vy);
+            if (vx_mag < 1) vx_mag = 1;
+
+            Pong_ball.vx = (Pong_ball.vx > 0) ? vx_mag : -vx_mag;
+        }
         Pong_ball.x += Pong_ball.vx;
         Pong_ball.y += Pong_ball.vy;
 
@@ -147,18 +181,21 @@ int main()
             Pong_ball.x = (LCD_W - Pong_ball.w) / 2;
             Pong_ball.y = (LCD_H - Pong_ball.h) / 2;
             Pong_ball.vy = 1;
+            Pong_ball.vx = -3;
             Left_player_score += 1;
-            draw_left_digit(Left_player_score, 0xFFFF);
+            start_time = to_ms_since_boot(get_absolute_time());
+            draw_digit(Left_player_score, 75, 10, 10, 2, 0xFFFF);
         }
 
         //Right Player Scores
         if (Pong_ball.x <= 0){
             Pong_ball.x = (LCD_W - Pong_ball.w) / 2;
             Pong_ball.y = (LCD_H - Pong_ball.h) / 2;
-            Pong_ball.vx = 5;
+            Pong_ball.vx = 3;
             Pong_ball.vy = 1;
             Right_player_score += 1;
-            draw_right_digit(Right_player_score, 0xFFFF);
+            start_time = to_ms_since_boot(get_absolute_time());
+            draw_digit(Right_player_score, 235, 10, 10, 2, 0xFFFF);
 
         }
 
@@ -187,11 +224,13 @@ int main()
             if ((bx + bw >= rpx) && (by + bh >=rpy) && (by <= Right_paddle.y + Right_paddle.h)){
                 Pong_ball.x = rpx - Pong_ball.w;
                 Pong_ball.vy = delta * max_vy / (rph/2);
-                if (Pong_ball.vy == 0){
-                    if (delta > 0) Pong_ball.vy = 1;
-                    else if (delta < 0) Pong_ball.vy = -1;
-                }
-                Pong_ball.vx = -Pong_ball.vx;
+                if (Pong_ball.vy > ball_speed - 1) Pong_ball.vy = ball_speed - 1;
+                if (Pong_ball.vy < -(ball_speed - 1)) Pong_ball.vy = -(ball_speed - 1);
+
+                // compute new vx from constant speed
+                int vx_mag = int_sqrt(ball_speed * ball_speed - Pong_ball.vy * Pong_ball.vy);
+                if (vx_mag < 1) vx_mag = 1;
+                Pong_ball.vx = -vx_mag;
             }
         }
 
@@ -205,8 +244,13 @@ int main()
             if ((bx < lpx + lpw) && (by + bh >=lpy) && (by <= Left_paddle.y + Left_paddle.h)){
                 Pong_ball.x = lpx + lpw;
                 Pong_ball.vy = delta * max_vy / (lph/2);
-                if (Pong_ball.vy == 0){1 * (delta/delta);}
-                Pong_ball.vx = -Pong_ball.vx;
+
+                if (Pong_ball.vy > ball_speed - 1) Pong_ball.vy = ball_speed - 1;
+                if (Pong_ball.vy < -(ball_speed - 1)) Pong_ball.vy = -(ball_speed - 1);
+
+                int vx_mag = int_sqrt(ball_speed * ball_speed - Pong_ball.vy * Pong_ball.vy);
+                if (vx_mag < 1) vx_mag = 1;
+                Pong_ball.vx = vx_mag;   // positive because bouncing right
             }
         }
 

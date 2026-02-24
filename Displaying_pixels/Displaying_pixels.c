@@ -126,267 +126,348 @@ void net_line(int rectangle_width, int rectangle_height, int color){
 }
 
 //Score Board Logic used 7 part logic
-void A1(int color){
-    fill_rect(75, 10, 10, 2, color);
+
+
+
+void A1(int x, int y, int w, int h, int color){
+    fill_rect(x, y, w, h, color);
+}
+void B1(int x, int y, int w, int h, int color){
+    fill_rect(x+w, y, h, w, color);
+}
+void C1(int x, int y, int w, int h, int color){
+    fill_rect(x+w, y+w, h, w, color);
+}
+void D1(int x, int y, int w, int h, int color){
+    fill_rect(x, y + 2*w, w, h, color);
+}
+void E1(int x, int y, int w, int h, int color){
+    fill_rect(x, y+ w, h, w, color);
+}
+void F1(int x, int y, int w, int h, int color){
+    fill_rect(x, y, h, w, color);
+}
+void G1(int x, int y, int w, int h, int color){
+    fill_rect(x, y+w, w, h, color);
 }
 
-void B1(int color){
-    fill_rect(85, 10, 2, 10, color);
-}
-void C1(int color){
-    fill_rect(85, 20, 2, 10, color);
-}
-void D1(int color){
-    fill_rect(75, 30, 10, 2, color);
-}
-void E1(int color){
-    fill_rect(75, 20, 2, 10, color);
-}
-void F1(int color){
-    fill_rect(75, 10, 2, 10, color);
-}
-void G1(int color){
-    fill_rect(75, 20, 10, 2, color);
-}
 
-void Left0(int color){
-    A1(color);
-    B1(color);
-    C1(color);
-    D1(color);
-    E1(color);
-    F1(color);
-}
-void Left1(int color){
-    B1(color);
-    C1(color);
-}
-void Left2(int color){
-    A1(color);
-    B1(color);
-    D1(color);
-    E1(color);
-    G1(color);
-}
-void Left3(int color){
-    A1(color);
-    B1(color);
-    C1(color);
-    D1(color);
-    G1(color);
-}
-void Left4(int color){
-    B1(color);
-    C1(color);
-    F1(color);
-    G1(color);
-}
-void Left5(int color){
-    A1(color);
-    C1(color);
-    D1(color);
-    F1(color);
-    G1(color);
-}
-void Left6(int color){
-    A1(color);
-    C1(color);
-    D1(color);
-    E1(color);
-    F1(color);
-    G1(color);
-}
-void Left7(int color){
-    A1(color);
-    B1(color);
-    C1(color);
-}
-void Left8(int color){
-    A1(color);
-    B1(color);
-    C1(color);
-    D1(color);
-    E1(color);
-    F1(color);
-    G1(color);
-}
-void Left9(int color){
-    A1(color);
-    B1(color);
-    C1(color);
-    F1(color);
-    G1(color);
-}
-
-void A2(int color){
-    fill_rect(235, 10, 10, 2, color);
-}
-void B2(int color){
-    fill_rect(245, 10, 2, 10, color);
-}
-void C2(int color){
-    fill_rect(245, 20, 2, 10, color);
-}
-void D2(int color){
-    fill_rect(235, 30, 10, 2, color);
-}
-void E2(int color){
-    fill_rect(235, 20, 2, 10, color);
-}
-void F2(int color){
-    fill_rect(235, 10, 2, 10, color);
-}
-void G2(int color){
-    fill_rect(235, 20, 10, 2, color);
-}
-
-void Right0(int color){
-    A2(color);
-    B2(color);
-    C2(color);
-    D2(color);
-    E2(color);
-    F2(color);
-}
-void Right1(int color){
-    B2(color);
-    C2(color);
-}
-void Right2(int color){
-    A2(color);
-    B2(color);
-    D2(color);
-    E2(color);
-    G2(color);
-}
-void Right3(int color){
-    A2(color);
-    B2(color);
-    C2(color);
-    D2(color);
-    G2(color);
-}
-void Right4(int color){
-    B2(color);
-    C2(color);
-    F2(color);
-    G2(color);
-}
-void Right5(int color){
-    A2(color);
-    C2(color);
-    D2(color);
-    F2(color);
-    G2(color);
-}
-void Right6(int color){
-    A2(color);
-    C2(color);
-    D2(color);
-    E2(color);
-    F2(color);
-    G2(color);
-}
-void Right7(int color){
-    A2(color);
-    B2(color);
-    C2(color);
-}
-void Right8(int color){
-    A2(color);
-    B2(color);
-    C2(color);
-    D2(color);
-    E2(color);
-    F2(color);
-    G2(color);
-}
-void Right9(int color){
-    A2(color);
-    B2(color);
-    C2(color);
-    F2(color);
-    G2(color);
-}
-
-void erase_left_score(){
-    fill_rect(70,10,20,25,0x0000);
-}
-
-void erase_right_score(){
-     fill_rect(230,10,20,25,0x0000);
-}
-
-void draw_left_digit(int score, int color){
-    erase_left_score();
-    switch (score){
+void draw_digit(int num, int x, int y, int w, int h, int color){
+    erase_portion(x,y,w + h,h + (2*w),0x0000);
+    switch (num) {
         case 0:
-            Left0(color);
+            A1(x, y, w, h, color);
+            B1(x, y, w, h, color);
+            C1(x, y, w, h, color);
+            D1(x, y, w, h, color);
+            E1(x, y, w, h, color);
+            F1(x, y, w, h, color);
             break;
         case 1:
-            Left1(color);
+            B1(x, y, w, h, color);
+            C1(x, y, w, h, color);
             break;
         case 2:
-            Left2(color);
+            A1(x, y, w, h, color);
+            B1(x, y, w, h, color);
+            D1(x, y, w, h, color);
+            E1(x, y, w, h, color);
+            G1(x, y, w, h, color);
             break;
         case 3:
-            Left3(color);
+            A1(x, y, w, h, color);
+            B1(x, y, w, h, color);
+            C1(x, y, w, h, color);
+            D1(x, y, w, h, color);
+            G1(x, y, w, h, color);
             break;
         case 4:
-            Left4(color);
+            B1(x, y, w, h, color);
+            C1(x, y, w, h, color);
+            F1(x, y, w, h, color);
+            G1(x, y, w, h, color);
             break;
         case 5:
-            Left5(color);
+            A1(x, y, w, h, color);
+            C1(x, y, w, h, color);
+            D1(x, y, w, h, color);
+            F1(x, y, w, h, color);
+            G1(x, y, w, h, color);
             break;
         case 6:
-            Left6(color);
+            A1(x, y, w, h, color);
+            C1(x, y, w, h, color);
+            D1(x, y, w, h, color);
+            E1(x, y, w, h, color);
+            F1(x, y, w, h, color);
+            G1(x, y, w, h, color);
             break;
         case 7:
-            Left7(color);
+            A1(x, y, w, h, color);
+            B1(x, y, w, h, color);
+            C1(x, y, w, h, color);
             break;
         case 8:
-            Left8(color);
+            A1(x, y, w, h, color);
+            B1(x, y, w, h, color);
+            C1(x, y, w, h, color);
+            D1(x, y, w, h, color);
+            E1(x, y, w, h, color);
+            F1(x, y, w, h, color);
+            G1(x, y, w, h, color);
             break;
         case 9:
-            Left9(color);
+            A1(x, y, w, h, color);
+            B1(x, y, w, h, color);
+            C1(x, y, w, h, color);
+            F1(x, y, w, h, color);
+            G1(x, y, w, h, color);
             break;
     }
-}
 
-void draw_right_digit(int score, int color){
-    erase_right_score();
-    switch (score){
-        case 0:
-            Right0(color);
-            break;
-        case 1:
-            Right1(color);
-            break;
-        case 2:
-            Right2(color);
-            break;
-        case 3:
-            Right3(color);
-            break;
-        case 4:
-            Right4(color);
-            break;
-        case 5:
-            Right5(color);
-            break;
-        case 6:
-            Right6(color);
-            break;
-        case 7:
-            Right7(color);
-            break;
-        case 8:
-            Right8(color);
-            break;
-        case 9:
-            Right9(color);
-            break;
-    }
+}
+// void Left0(int x, int y, int w, int h, int color){
+//     A1(color);
+//     B1(color);
+//     C1(color);
+//     D1(color);
+//     E1(color);
+//     F1(color);
+// }
+// void Left1(int x, int y, int w, int h, int color){
+//     B1(color);
+//     C1(color);
+// }
+// void Left2(int x, int y, int w, int h, int color){
+//     A1(color);
+//     B1(color);
+//     D1(color);
+//     E1(color);
+//     G1(color);
+// }
+// void Left3(int x, int y, int w, int h, int color){
+//     A1(color);
+//     B1(color);
+//     C1(color);
+//     D1(color);
+//     G1(color);
+// }
+// void Left4(int x, int y, int w, int h, int color){
+//     B1(color);
+//     C1(color);
+//     F1(color);
+//     G1(color);
+// }
+// void Left5(int x, int y, int w, int h, int color){
+//     A1(color);
+//     C1(color);
+//     D1(color);
+//     F1(color);
+//     G1(color);
+// }
+// void Left6(int x, int y, int w, int h, int color){
+//     A1(color);
+//     C1(color);
+//     D1(color);
+//     E1(color);
+//     F1(color);
+//     G1(color);
+// }
+// void Left7(int x, int y, int w, int h, int color){
+//     A1(color);
+//     B1(color);
+//     C1(color);
+// }
+// void Left8(int x, int y, int w, int h, int color){
+//     A1(color);
+//     B1(color);
+//     C1(color);
+//     D1(color);
+//     E1(color);
+//     F1(color);
+//     G1(color);
+// }
+// void Left9(int x, int y, int w, int h, int color){
+//     A1(color);
+//     B1(color);
+//     C1(color);
+//     F1(color);
+//     G1(color);
+// }
+
+// void A2(int x, int y, int w, int h, int color){
+//     fill_rect(235, 10, 10, 2, color);
+// }
+// void B2(int color){
+//     fill_rect(245, 10, 2, 10, color);
+// }
+// void C2(int color){
+//     fill_rect(245, 20, 2, 10, color);
+// }
+// void D2(int color){
+//     fill_rect(235, 30, 10, 2, color);
+// }
+// void E2(int color){
+//     fill_rect(235, 20, 2, 10, color);
+// }
+// void F2(int color){
+//     fill_rect(235, 10, 2, 10, color);
+// }
+// void G2(int color){
+//     fill_rect(235, 20, 10, 2, color);
+// }
+
+// void Right0(int color){
+//     A2(color);
+//     B2(color);
+//     C2(color);
+//     D2(color);
+//     E2(color);
+//     F2(color);
+// }
+// void Right1(int color){
+//     B2(color);
+//     C2(color);
+// }
+// void Right2(int color){
+//     A2(color);
+//     B2(color);
+//     D2(color);
+//     E2(color);
+//     G2(color);
+// }
+// void Right3(int color){
+//     A2(color);
+//     B2(color);
+//     C2(color);
+//     D2(color);
+//     G2(color);
+// }
+// void Right4(int color){
+//     B2(color);
+//     C2(color);
+//     F2(color);
+//     G2(color);
+// }
+// void Right5(int color){
+//     A2(color);
+//     C2(color);
+//     D2(color);
+//     F2(color);
+//     G2(color);
+// }
+// void Right6(int color){
+//     A2(color);
+//     C2(color);
+//     D2(color);
+//     E2(color);
+//     F2(color);
+//     G2(color);
+// }
+// void Right7(int color){
+//     A2(color);
+//     B2(color);
+//     C2(color);
+// }
+// void Right8(int color){
+//     A2(color);
+//     B2(color);
+//     C2(color);
+//     D2(color);
+//     E2(color);
+//     F2(color);
+//     G2(color);
+// }
+// void Right9(int color){
+//     A2(color);
+//     B2(color);
+//     C2(color);
+//     F2(color);
+//     G2(color);
+// }
+
+// void erase_left_score(){
+//     fill_rect(70,10,20,25,0x0000);
+// }
+
+// void erase_right_score(){
+//      fill_rect(230,10,20,25,0x0000);
+// }
+
+// void draw_left_digit(int score, int color){
+//     erase_left_score();
+//     switch (score){
+//         case 0:
+//             Left0(color);
+//             break;
+//         case 1:
+//             Left1(color);
+//             break;
+//         case 2:
+//             Left2(color);
+//             break;
+//         case 3:
+//             Left3(color);
+//             break;
+//         case 4:
+//             Left4(color);
+//             break;
+//         case 5:
+//             Left5(color);
+//             break;
+//         case 6:
+//             Left6(color);
+//             break;
+//         case 7:
+//             Left7(color);
+//             break;
+//         case 8:
+//             Left8(color);
+//             break;
+//         case 9:
+//             Left9(color);
+//             break;
+//     }
+// }
+
+// void draw_right_digit(int score, int color){
+//     erase_right_score();
+//     switch (score){
+//         case 0:
+//             Right0(color);
+//             break;
+//         case 1:
+//             Right1(color);
+//             break;
+//         case 2:
+//             Right2(color);
+//             break;
+//         case 3:
+//             Right3(color);
+//             break;
+//         case 4:
+//             Right4(color);
+//             break;
+//         case 5:
+//             Right5(color);
+//             break;
+//         case 6:
+//             Right6(color);
+//             break;
+//         case 7:
+//             Right7(color);
+//             break;
+//         case 8:
+//             Right8(color);
+//             break;
+//         case 9:
+//             Right9(color);
+//             break;
+//     }
+// }
+
+void erase_portion(int x, int y, int w, int h, int color){
+    fill_rect(x,y,w,h,color);
 }
 
 //Initializing the display and Pins on Pico
