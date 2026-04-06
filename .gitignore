@@ -1,19 +1,20 @@
-# Build output
-build/
-
-# Mac junk
 .DS_Store
 
-# VSCode
+build/
+cmake-build-*/
+
+Pong/build/
+Displaying_pixels/build/
+
 .vscode/
+Pong/.vscode/
+Displaying_pixels/.vscode/
 
-#PICO-SDK
-pico-sdk/
-
-# Compiled files
-*.o
 *.elf
 *.uf2
 *.bin
+*.hex
 *.map
-CMakeCache.txt
+*.dis
+
+external/pico-sdk/
